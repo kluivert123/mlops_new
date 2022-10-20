@@ -1,18 +1,17 @@
-FROM python:3.7
+# syntax=docker/dockerfile:experimental
+FROM python:3.10.8
 
-RUN pip install virtualenv
-ENV VIRTUAL_ENV=/venv
-RUN virtualenv venv -p python3
-ENV PATH="VIRTUAL_ENV/bin:$PATH"
 
-WORKDIR /app
-ADD . /app
+
+WORKDIR /kluivert-docker
+
 
 # install dependencies
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-# expose port
-EXPOSE 5000
+COPY . . 
+
 
 # run application
-CMD ["python", "app.py"]
+CMD ["python3", "-m", "flask", "run", "--host =0.0.0.0"]
